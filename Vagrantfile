@@ -82,6 +82,8 @@ Vagrant.configure("2") do |config|
      chef.add_recipe "onms-admin-tools"
      chef.add_recipe "openjdk"
      chef.add_recipe "maven"
+     chef.add_recipe "onms-repo"
+     chef.add_recipe "onms-install"
      #chef.add_role "opennms"
   #
   #   # You may also specify custom JSON attributes:
