@@ -1,11 +1,12 @@
-include_recipe "apt::default"
-
+if platform?("ubuntu", "debian")
+  include_recipe "apt::default"
+end
 
 ruby_block "Adjust locale" do
   block do    
-    ENV['LANGUAGE'] = "en_US.utf-8"
-    ENV['LANG'] = "en_US.utf-8"
-    ENV['LC_ALL'] = "en_US.utf-8"
+    ENV['LANGUAGE'] = node[:opennms][:locale]
+    ENV['LANG'] = node[:opennms][:locale]
+    ENV['LC_ALL'] = node[:opennms][:locale]
   end
 end
 
@@ -28,7 +29,7 @@ template node[:opennms][:pg_hba_location] do
   notifies :restart, "service[postgresql]", :immediately
 end
 
-package "openjdk-7-jdk" do
+package node[:opennms][:jdk_package] do
   action :install
 end
 
