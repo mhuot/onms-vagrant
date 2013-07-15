@@ -1,0 +1,1 @@
+default['onmsrepo']['release']  = 'stable' #stable, testing, unstable, snapshot, bleeding, opennms-1.12, etc
