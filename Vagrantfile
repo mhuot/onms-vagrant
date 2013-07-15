@@ -17,6 +17,7 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 8980, host: 8980
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -76,19 +77,20 @@ Vagrant.configure("2") do |config|
   # some recipes and/or roles.
   #
   config.vm.provision :chef_solo do |chef|
-     chef.cookbooks_path = "cookbooks", "site-cookbooks"
-     chef.roles_path = "roles"
-     chef.data_bags_path = "databags"
-     chef.add_recipe "onms-admin-tools"
-     chef.add_recipe "openjdk"
-     chef.add_recipe "maven"
-     chef.add_recipe "onms-repo"
-     chef.add_recipe "onms-install"
-     #chef.add_role "opennms"
+    chef.cookbooks_path = "cookbooks", "site-cookbooks"
+    chef.roles_path = "roles"
+    chef.data_bags_path = "databags"
+    chef.add_recipe "onms_admin_tools"
+    chef.add_recipe "apt"
+    chef.add_recipe "onmsrepo"
+    chef.add_recipe "maven"
+    chef.add_recipe "opennms"
+    #chef.add_role "opennms"
   #
   #   # You may also specify custom JSON attributes:
-     chef.json = { 
-     }
+    chef.json = { 
+      :postgresql => {:password => {:postgres => 'onms1234'}}
+    }
   end
 
   # Enable provisioning with chef server, specifying the chef server URL,
