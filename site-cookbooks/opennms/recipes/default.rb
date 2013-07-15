@@ -1,8 +1,5 @@
 include_recipe "apt::default"
 
-execute "set PGVERSION" do 
-  command "export PGVERSION=`pg_lsclusters -h | head -n 1 | cut -d' ' -f1`"
-end
 
 ruby_block "Adjust locale" do
   block do    
@@ -19,7 +16,7 @@ service "postgresql" do
   supports :status => true, :restart => true, :start => true, :stop => true
 end
 
-template "#{node[:opennms][:pg_hba_location]}" do
+template node[:opennms][:pg_hba_location] do
   source "pg_hba.conf.erb"
   owner "postgres"
   group "postgres"
@@ -27,7 +24,8 @@ template "#{node[:opennms][:pg_hba_location]}" do
   variables ({
     :pg_auth_method => node[:opennms][:pg_auth_method]
     })
-  notifies :restart, resources(:service => "postgresql"), :immediately
+  # notifies :restart, resources(:service => "postgresql"), :immediately
+  notifies :restart, "service[postgresql]", :immediately
 end
 
 package "openjdk-7-jdk" do
